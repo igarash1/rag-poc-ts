@@ -1,0 +1,45 @@
+[
+  {
+    "question": "When is the tournament and when does registration close?",
+    "tenant": "acme-gaming",
+    "answerable": true,
+    "expected_message_ids": ["a8"]
+  },
+  {
+    "question": "What changed in the v2.3 update?",
+    "tenant": "acme-gaming",
+    "answerable": true,
+    "expected_message_ids": ["a3"]
+  },
+  {
+    "question": "Why can't I log in and how do I fix it?",
+    "tenant": "acme-gaming",
+    "answerable": true,
+    "expected_message_ids": ["a6"]
+  },
+  {
+    "question": "What is the rate limit on the free tier?",
+    "tenant": "devtools-hub",
+    "answerable": true,
+    "expected_message_ids": ["b3"]
+  },
+  {
+    "question": "How do I enable streaming in SDK v4?",
+    "tenant": "devtools-hub",
+    "answerable": true,
+    "expected_message_ids": ["b5"]
+  },
+  {
+    "question": "What is the refund policy?",
+    "tenant": "acme-gaming",
+    "answerable": false,
+    "expected_message_ids": []
+  },
+  {
+    "question": "When is the tournament?",
+    "tenant": "devtools-hub",
+    "answerable": false,
+    "expected_message_ids": [],
+    "note": "cross-tenant isolation: the tournament exists only in acme-gaming; must not leak."
+  }
+]
