@@ -8,12 +8,12 @@
  * a re-ranker; here we keep a tiny, transparent stand-in.
  */
 
-import { embed_one } from "./embed.js";
+import { embedOne } from "./embed.js";
 import type { VectorStore } from "./store.js";
 import type { Retrieved } from "./types.js";
 import { tokenize } from "./text.js";
 
-function lex_overlap(query: string, text: string): number {
+function lexOverlap(query: string, text: string): number {
   const q = new Set(tokenize(query));
   if (q.size === 0) {
     return 0.0;
@@ -33,14 +33,14 @@ export async function retrieve(
 ): Promise<Retrieved[]> {
   /* Return top-k chunks for `tenant`. alpha weights semantic vs lexical. */
   // Over-fetch, then (optionally) re-rank by a blended score.
-  const candidates = await store.search(await embed_one(query), tenant, Math.max(k, 10));
+  const candidates = await store.search(await embedOne(query), tenant, Math.max(k, 10));
   if (!hybrid) {
     return candidates.slice(0, k);
   }
 
   const blended: Retrieved[] = [];
   for (const r of candidates) {
-    const lex = lex_overlap(query, r.chunk.text);
+    const lex = lexOverlap(query, r.chunk.text);
     const score = alpha * r.score + (1 - alpha) * lex;
     blended.push({ chunk: r.chunk, score });
   }

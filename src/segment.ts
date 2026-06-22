@@ -23,7 +23,7 @@ interface RawMessage {
   reply_to: string | null;
 }
 
-export function load_messages(path?: string): Message[] {
+export function loadMessages(path?: string): Message[] {
   path = path ?? config.DATA_FILE;
   if (!path) {
     throw new Error("DATA_FILE environment variable is not set.");
@@ -42,7 +42,7 @@ export function load_messages(path?: string): Message[] {
   );
 }
 
-function parse_ts(ts: string): Date {
+function parseTs(ts: string): Date {
   // ISO-8601 (including a trailing 'Z') parses natively on Node >= 20.
   const d = new Date(ts);
   if (Number.isNaN(d.getTime())) {
@@ -51,15 +51,15 @@ function parse_ts(ts: string): Date {
   return d;
 }
 
-export function build_chunks(messages: Message[]): Chunk[] {
+export function buildChunks(messages: Message[]): Chunk[] {
   // Stable ordering within each (tenant, channel) timeline.
   // Copy first — Array.sort mutates in place, and we don't own the caller's array.
   messages = [...messages].sort((a, b) => {
-    const a_ts = parse_ts(a.ts);
-    const b_ts = parse_ts(b.ts);
+    const aTs = parseTs(a.ts);
+    const bTs = parseTs(b.ts);
     if (a.tenant !== b.tenant) return a.tenant.localeCompare(b.tenant);
     if (a.channel !== b.channel) return a.channel.localeCompare(b.channel);
-    return a_ts.getTime() - b_ts.getTime();
+    return aTs.getTime() - bTs.getTime();
   });
 
   const chunks: Chunk[] = [];
@@ -83,9 +83,15 @@ export function build_chunks(messages: Message[]): Chunk[] {
   for (const m of messages) {
     if (cur.length > 0) {
       const prev = cur[cur.length - 1]!;
-      const same_thread = prev.tenant === m.tenant && prev.channel === m.channel;
-      const within_gap = parse_ts(m.ts).getTime() - parse_ts(prev.ts).getTime() <= gap;
-      if (!(same_thread && within_gap)) {
+      const sameThread = prev.tenant === m.tenant && prev.channel === m.channel;
+      const withinGap = parseTs(m.ts).getTime() - parseTs(prev.ts).getTime() <= gap;
+      // A reply stays attached to the conversation it answers even if the
+      // time-gap would otherwise split it off — as long as its parent is still
+      // in the open segment. Channel/tenant remain hard boundaries (sameThread):
+      // a reply only relaxes the gap, never crosses channels. Replies into an
+      // already-flushed segment fall back to the gap rule.
+      const linkedReply = m.replyTo !== null && cur.some((c) => c.id === m.replyTo);
+      if (!(sameThread && (withinGap || linkedReply))) {
         flush();
       }
     }

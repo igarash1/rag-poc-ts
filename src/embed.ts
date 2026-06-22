@@ -32,7 +32,7 @@ function hash(s: string): number {
 }
 
 // this is for testing
-export function mock_embed(text: string): number[] {
+export function mockEmbed(text: string): number[] {
   const vec = new Array(config.EMBED_DIM).fill(0.0);
   for (const tok of tokenize(text)) {
     // Two independent hashes reduce collisions a little.
@@ -46,10 +46,10 @@ export function mock_embed(text: string): number[] {
   return vec.map((v) => v / norm);
 }
 
-export async function embed_texts(texts: string[]): Promise<number[][]> {
+export async function embedTexts(texts: string[]): Promise<number[][]> {
   /* Embed a batch of texts -> list of vectors (same order). */
   if (config.MOCK) {
-    return texts.map(mock_embed);
+    return texts.map(mockEmbed);
   }
 
   // Lazy imports so MOCK mode runs even without the provider SDKs installed.
@@ -77,6 +77,6 @@ export async function embed_texts(texts: string[]): Promise<number[][]> {
   return resp.data.map((d) => d.embedding);
 }
 
-export async function embed_one(text: string): Promise<number[]> {
-  return (await embed_texts([text]))[0]!;
+export async function embedOne(text: string): Promise<number[]> {
+  return (await embedTexts([text]))[0]!;
 }
