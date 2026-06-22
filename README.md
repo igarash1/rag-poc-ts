@@ -1,7 +1,7 @@
 # Conversation RAG — PoC (TypeScript)
 
 A small dependency-light RAG pipeline over community
-chat conversations, built to explore the core problem behind a
+chat conversations, built to learn a
 community-intelligence product: answer questions from a community's history,
 grounded and cited, without hallucinating, and without leaking across tenants.
 
