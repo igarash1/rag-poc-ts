@@ -1,0 +1,36 @@
+{
+  "name": "rag-poc-ts",
+  "version": "0.1.0",
+  "description": "Conversation RAG PoC — TypeScript port (grounded, cited, multi-tenant, eval)",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "ingest": "tsx src/ingest.ts",
+    "query": "tsx src/query.ts",
+    "eval": "tsx src/eval.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
+  "optionalDependencies": {
+    "@google/genai": "^1.52.0",
+    "openai": "^4.104.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.3.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^2.1.0"
+  }
+}

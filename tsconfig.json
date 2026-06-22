@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* Language & module system */
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "types": ["node"],
+
+    /* Strictness — this is what makes the compiler your tutor.
+       With these on, TS flags every possible null, every untyped value,
+       and every unchecked array access. */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+
+    /* We run via `tsx`/`vitest` and only use `tsc` for type-checking,
+       so we never emit .js — noEmit keeps tsc as a pure checker. */
+    "noEmit": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src"]
+}

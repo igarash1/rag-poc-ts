@@ -1,0 +1,159 @@
+[
+  {
+    "id": "a1",
+    "tenant": "acme-gaming",
+    "channel": "general",
+    "author": "Mika",
+    "ts": "2026-06-01T10:00:00Z",
+    "content": "Heads up everyone: the v2.3 update is live!",
+    "reply_to": null
+  },
+  {
+    "id": "a2",
+    "tenant": "acme-gaming",
+    "channel": "general",
+    "author": "Ravi",
+    "ts": "2026-06-01T10:02:00Z",
+    "content": "What's new in v2.3?",
+    "reply_to": "a1"
+  },
+  {
+    "id": "a3",
+    "tenant": "acme-gaming",
+    "channel": "general",
+    "author": "Mika",
+    "ts": "2026-06-01T10:03:00Z",
+    "content": "v2.3 adds a dark mode and fixes the crash on Android startup. iOS is unaffected.",
+    "reply_to": "a2"
+  },
+  {
+    "id": "a4",
+    "tenant": "acme-gaming",
+    "channel": "general",
+    "author": "Sora",
+    "ts": "2026-06-01T10:05:00Z",
+    "content": "Dark mode finally, thank you!",
+    "reply_to": "a3"
+  },
+
+  {
+    "id": "a5",
+    "tenant": "acme-gaming",
+    "channel": "support",
+    "author": "Leo",
+    "ts": "2026-06-02T09:00:00Z",
+    "content": "I can't log in since this morning, it says invalid session.",
+    "reply_to": null
+  },
+  {
+    "id": "a6",
+    "tenant": "acme-gaming",
+    "channel": "support",
+    "author": "Mika",
+    "ts": "2026-06-02T09:10:00Z",
+    "content": "The login bug is caused by expired auth tokens on our side. Workaround: log out fully and log back in. A permanent fix ships tomorrow.",
+    "reply_to": "a5"
+  },
+  {
+    "id": "a7",
+    "tenant": "acme-gaming",
+    "channel": "support",
+    "author": "Leo",
+    "ts": "2026-06-02T09:15:00Z",
+    "content": "Re-logging in worked, thanks!",
+    "reply_to": "a6"
+  },
+
+  {
+    "id": "a8",
+    "tenant": "acme-gaming",
+    "channel": "events",
+    "author": "Mika",
+    "ts": "2026-06-03T12:00:00Z",
+    "content": "Our summer tournament is on Saturday June 13th, 8pm JST. Registration closes Friday June 12th at midnight.",
+    "reply_to": null
+  },
+  {
+    "id": "a9",
+    "tenant": "acme-gaming",
+    "channel": "events",
+    "author": "Ravi",
+    "ts": "2026-06-03T12:30:00Z",
+    "content": "Is there an entry fee for the tournament?",
+    "reply_to": "a8"
+  },
+  {
+    "id": "a10",
+    "tenant": "acme-gaming",
+    "channel": "events",
+    "author": "Mika",
+    "ts": "2026-06-03T12:35:00Z",
+    "content": "No entry fee, it's free to join. Top 3 win in-game currency.",
+    "reply_to": "a9"
+  },
+
+  {
+    "id": "a11",
+    "tenant": "acme-gaming",
+    "channel": "feedback",
+    "author": "Sora",
+    "ts": "2026-06-04T15:00:00Z",
+    "content": "Feature request: please add controller support on mobile.",
+    "reply_to": null
+  },
+  {
+    "id": "a12",
+    "tenant": "acme-gaming",
+    "channel": "feedback",
+    "author": "Ravi",
+    "ts": "2026-06-04T15:20:00Z",
+    "content": "+1 for controller support, would love that.",
+    "reply_to": "a11"
+  },
+
+  {
+    "id": "b1",
+    "tenant": "devtools-hub",
+    "channel": "announcements",
+    "author": "Priya",
+    "ts": "2026-06-01T08:00:00Z",
+    "content": "SDK v4 is out. The big change: it now supports streaming responses and drops Node 16 support.",
+    "reply_to": null
+  },
+  {
+    "id": "b2",
+    "tenant": "devtools-hub",
+    "channel": "help",
+    "author": "Tom",
+    "ts": "2026-06-02T11:00:00Z",
+    "content": "What's the rate limit on the free tier?",
+    "reply_to": null
+  },
+  {
+    "id": "b3",
+    "tenant": "devtools-hub",
+    "channel": "help",
+    "author": "Priya",
+    "ts": "2026-06-02T11:05:00Z",
+    "content": "Free tier is 100 requests per minute. The pro tier raises it to 1,000 req/min.",
+    "reply_to": "b2"
+  },
+  {
+    "id": "b4",
+    "tenant": "devtools-hub",
+    "channel": "help",
+    "author": "Yuki",
+    "ts": "2026-06-02T11:30:00Z",
+    "content": "How do I enable streaming with the new SDK?",
+    "reply_to": "b1"
+  },
+  {
+    "id": "b5",
+    "tenant": "devtools-hub",
+    "channel": "help",
+    "author": "Priya",
+    "ts": "2026-06-02T11:40:00Z",
+    "content": "Pass stream=true to the client.generate() call. See the v4 migration guide for details.",
+    "reply_to": "b4"
+  }
+]

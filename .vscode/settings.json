@@ -1,0 +1,19 @@
+{
+  // Format with the Prettier extension (it reads .prettierrc), so the editor
+  // produces exactly what `npm run format` does — no more editor/CLI drift.
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  // Match Prettier's default (2 spaces). detectIndentation:false stops VSCode
+  // from guessing tab width per file and overriding this.
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+
+  // Per-language: ensure Prettier wins for every file type it owns.
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[markdown]": { "editor.defaultFormatter": "esbenp.prettier-vscode" }
+}
