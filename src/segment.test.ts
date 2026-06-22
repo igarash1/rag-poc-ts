@@ -59,4 +59,32 @@ describe("buildChunks segmentation", () => {
     ]);
     expect(chunks).toHaveLength(2);
   });
+
+  it("does not link a reply across tenants (tenant stays a hard boundary)", () => {
+    const chunks = buildChunks([
+      msg({ id: "a", tenant: "t1", ts: at(0) }),
+      msg({ id: "b", tenant: "t2", ts: at(1), replyTo: "a" }),
+    ]);
+    expect(chunks).toHaveLength(2);
+  });
+
+  it("falls back to the gap rule when the reply's parent has already been flushed", () => {
+    // a..b are one segment; c is far from b so it flushes; d replies to the
+    // already-flushed `a`, so the reply-link can't save it — gap wins.
+    const chunks = buildChunks([
+      msg({ id: "a", ts: at(0) }),
+      msg({ id: "b", ts: at(1) }),
+      msg({ id: "c", ts: at(farApart) }),
+      msg({ id: "d", ts: at(2 * farApart), replyTo: "a" }),
+    ]);
+    expect(chunks.map((c) => c.messageIds)).toEqual([["a", "b"], ["c"], ["d"]]);
+  });
+
+  it("falls back to the gap rule for a dangling reply (parent id not present)", () => {
+    const chunks = buildChunks([
+      msg({ id: "a", ts: at(0) }),
+      msg({ id: "b", ts: at(farApart), replyTo: "ghost" }), // no such parent
+    ]);
+    expect(chunks).toHaveLength(2);
+  });
 });
