@@ -1,0 +1,9 @@
+.env
+
+# TypeScript / Node
+node_modules/
+dist/
+rag-index.json
+
+# Local tool state
+.claude/
