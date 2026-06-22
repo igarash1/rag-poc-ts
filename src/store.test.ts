@@ -85,4 +85,10 @@ describe("InMemoryVectorStore", () => {
       rmSync(dir, { recursive: true, force: true });
     }
   });
+
+  it("throws on a query/row dimension mismatch (stale cross-provider index)", () => {
+    const store = new InMemoryVectorStore();
+    store.add([chunk("a", "t1", [1, 0, 0])]); // 3-dim rows
+    expect(() => store.search([1, 0], "t1", 1)).toThrow(/dimension mismatch/);
+  });
 });

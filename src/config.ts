@@ -32,11 +32,17 @@ export const INDEX_FILE = path.join(ROOT, "rag-index.json");
 const env = (key: string): string => (process.env[key] ?? "").trim();
 
 export type Provider = "mock" | "gemini" | "openai";
+const PROVIDERS: readonly Provider[] = ["mock", "gemini", "openai"];
 
 export const OPENAI_API_KEY = env("OPENAI_API_KEY");
 export const GOOGLE_API_KEY = env("GEMINI_API_KEY") || env("GOOGLE_API_KEY");
 
 const forced = env("RAG_PROVIDER").toLowerCase();
+if (forced && !(PROVIDERS as readonly string[]).includes(forced)) {
+  throw new Error(
+    `Invalid RAG_PROVIDER="${forced}" — expected one of: ${PROVIDERS.join(", ")}.`,
+  );
+}
 export const PROVIDER: Provider = process.env.RAG_MOCK
   ? "mock"
   : forced

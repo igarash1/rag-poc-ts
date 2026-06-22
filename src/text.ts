@@ -3,7 +3,10 @@
  * topic overlap rather than shared function words. Real OpenAI embeddings don't
  * need this — it only sharpens the offline stand-in and the lexical signal.
  */
-const emailRegex: RegExp = /[a-z0-9]+/g;
+// Content tokens: alphanumeric runs that keep internal . _ - so version strings
+// and identifiers survive whole (e.g. "v2.3", "sdk-v4", "e_42") — that's exactly
+// what lets the lexical (hybrid) scorer match the exact tokens embeddings miss.
+const WORD_RE = /[a-z0-9]+(?:[._-][a-z0-9]+)*/g;
 
 const STOPWORDS = new Set<string>([
   "a",
@@ -84,7 +87,5 @@ const STOPWORDS = new Set<string>([
 ]);
 
 export function tokenize(text: string): string[] {
-  return [...(text.toLowerCase().match(emailRegex) || [])].filter(
-    (t) => !STOPWORDS.has(t),
-  );
+  return [...(text.toLowerCase().match(WORD_RE) ?? [])].filter((t) => !STOPWORDS.has(t));
 }

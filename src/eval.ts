@@ -12,6 +12,11 @@
  * Faithfulness (does the generated answer only use retrieved facts?) is the
  * natural next layer — typically an LLM-as-judge pass — left as a production TODO.
  *
+ * NOTE on MOCK: the mock embedder is hashed bag-of-words, so off-topic text is
+ * orthogonal (cosine ~0). That makes the refusal cases trivially separable — MOCK
+ * eval validates recall and tenant isolation, but NOT *semantic* refusal
+ * (rejecting plausible-but-wrong neighbours). Calibrate refusal on a real provider.
+ *
  * Run:  npm run eval
  */
 import * as config from "./config.js";

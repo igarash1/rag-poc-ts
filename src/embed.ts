@@ -9,8 +9,6 @@
 
 import * as config from "./config.js";
 import { tokenize } from "./text.js";
-import { GoogleGenAI } from "@google/genai";
-import OpenAI from "openai";
 
 function hash(s: string): number {
   const FNV_PRIME = 0x01000193; // 16777619
@@ -54,16 +52,22 @@ export async function embed_texts(texts: string[]): Promise<number[][]> {
     return texts.map(mock_embed);
   }
 
-  // Lazy imports so the package loads with whichever SDK is installed.
-  if (config.PROVIDER == "gemini") {
+  // Lazy imports so MOCK mode runs even without the provider SDKs installed.
+  if (config.PROVIDER === "gemini") {
+    const { GoogleGenAI } = await import("@google/genai");
     const client = new GoogleGenAI({ apiKey: config.GOOGLE_API_KEY });
     const resp = await client.models.embedContent({
       model: config.EMBED_MODEL,
       contents: texts,
     });
-    return resp.embeddings!.map((e) => e.values!);
+    if (!resp.embeddings) throw new Error("Gemini returned no embeddings");
+    return resp.embeddings.map((e) => {
+      if (!e.values) throw new Error("Gemini returned an embedding without values");
+      return e.values;
+    });
   }
 
+  const { default: OpenAI } = await import("openai");
   const client = new OpenAI({ apiKey: config.OPENAI_API_KEY });
   // OpenAI accepts a list input and returns embeddings in input order.
   const resp = await client.embeddings.create({

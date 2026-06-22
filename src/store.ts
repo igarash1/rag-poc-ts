@@ -32,11 +32,16 @@ function l2normalize(vec: number[]): number[] {
   return vec.map((x) => x / norm);
 }
 
-/** Dot product. Assumes equal length (same embedding dimension). */
+/** Dot product. Both vectors must share the same dimension. */
 function dot(a: number[], b: number[]): number {
+  if (a.length !== b.length) {
+    throw new Error(
+      `dot: dimension mismatch (${a.length} vs ${b.length}) — rebuild the index ` +
+        `(rm rag-index.json) after switching embedding providers.`,
+    );
+  }
   let sum = 0;
-  // `noUncheckedIndexedAccess` makes a[i] possibly-undefined, hence `?? 0`.
-  for (let i = 0; i < a.length; i++) sum += (a[i] ?? 0) * (b[i] ?? 0);
+  for (let i = 0; i < a.length; i++) sum += a[i]! * b[i]!;
   return sum;
 }
 
@@ -116,6 +121,11 @@ export class InMemoryVectorStore implements VectorStore {
     const store = new InMemoryVectorStore();
     const payload = JSON.parse(readFileSync(path, "utf-8")) as IndexFile;
     for (const m of payload.chunks) {
+      if (m.embedding.length !== payload.dim) {
+        throw new Error(
+          `Corrupt index ${path}: embedding length ${m.embedding.length} ≠ declared dim ${payload.dim}. Re-run ingest.`,
+        );
+      }
       store.chunks.push({
         id: m.id,
         tenant: m.tenant,

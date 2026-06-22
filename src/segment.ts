@@ -43,14 +43,18 @@ export function load_messages(path?: string): Message[] {
 }
 
 function parse_ts(ts: string): Date {
-  // Handle trailing 'Z' (UTC) across Node versions.
-  // TODO: Do we need this?
-  return new Date(ts.replace("Z", "+00:00"));
+  // ISO-8601 (including a trailing 'Z') parses natively on Node >= 20.
+  const d = new Date(ts);
+  if (Number.isNaN(d.getTime())) {
+    throw new Error(`Invalid timestamp: ${ts}`);
+  }
+  return d;
 }
 
 export function build_chunks(messages: Message[]): Chunk[] {
   // Stable ordering within each (tenant, channel) timeline.
-  messages = messages.sort((a, b) => {
+  // Copy first — Array.sort mutates in place, and we don't own the caller's array.
+  messages = [...messages].sort((a, b) => {
     const a_ts = parse_ts(a.ts);
     const b_ts = parse_ts(b.ts);
     if (a.tenant !== b.tenant) return a.tenant.localeCompare(b.tenant);
