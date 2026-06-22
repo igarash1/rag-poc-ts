@@ -12,7 +12,8 @@ import * as config from "./config.js";
 import type { Retrieved, AnswerResult } from "./types.js";
 import type { VectorStore } from "./store.js";
 import { retrieve } from "./retrieve.js";
-import { GoogleGenAI } from "@google/genai";
+// NB: only a *type* import here — it's erased at compile time. The GoogleGenAI
+// value is loaded lazily inside llmAnswer so MOCK mode runs without the SDK.
 import type { GenerateContentConfig } from "@google/genai";
 
 const SYSTEM =
@@ -21,7 +22,7 @@ const SYSTEM =
   "square brackets, e.g. [a3]. If the context does not contain the answer, " +
   "say you don't know — never guess.";
 
-export function _format_context(hits: Retrieved[]): string {
+export function formatContext(hits: Retrieved[]): string {
   const blocks: string[] = [];
   for (const r of hits) {
     const ids = r.chunk.messageIds.join(", ");
@@ -30,7 +31,7 @@ export function _format_context(hits: Retrieved[]): string {
   return blocks.join("\n\n");
 }
 
-export function _mock_answer(question: string, hits: Retrieved[]): string {
+export function mockAnswer(_question: string, hits: Retrieved[]): string {
   const top = hits[0]!;
   const ids = top.chunk.messageIds.join(", ");
   return (
@@ -39,10 +40,12 @@ export function _mock_answer(question: string, hits: Retrieved[]): string {
   );
 }
 
-export async function _llm_answer(question: string, hits: Retrieved[]): Promise<string> {
-  const user = `Context:\n${_format_context(hits)}\n\nQuestion: ${question}`;
+export async function llmAnswer(question: string, hits: Retrieved[]): Promise<string> {
+  const user = `Context:\n${formatContext(hits)}\n\nQuestion: ${question}`;
 
   if (config.PROVIDER == "gemini") {
+    // Lazy import: keeps MOCK mode runnable without @google/genai installed.
+    const { GoogleGenAI } = await import("@google/genai");
     const client = new GoogleGenAI({ apiKey: config.GOOGLE_API_KEY });
     const resp = await client.models.generateContent({
       model: config.CHAT_MODEL,
@@ -96,8 +99,8 @@ export async function answer(
   }
 
   const text = config.MOCK
-    ? _mock_answer(question, relevant)
-    : await _llm_answer(question, relevant);
+    ? mockAnswer(question, relevant)
+    : await llmAnswer(question, relevant);
 
   return {
     refused: false,

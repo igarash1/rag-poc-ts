@@ -84,5 +84,6 @@ export const RETRIEVAL_MIN_SCORE = Number(
 );
 
 // Conversation segmentation: messages in the same channel within this many
-// minutes (or linked by replyTo) are grouped into one "conversation" chunk.
+// minutes — or linked by replyTo to a message already in the open segment —
+// are grouped into one "conversation" chunk. See buildChunks in segment.ts.
 export const SEGMENT_GAP_MINUTES = 30;
