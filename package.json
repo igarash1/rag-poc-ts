@@ -1,7 +1,7 @@
 {
-  "name": "rag-poc-ts",
+  "name": "rag-learning-ts",
   "version": "0.1.0",
-  "description": "Conversation RAG PoC — TypeScript port (grounded, cited, multi-tenant, eval)",
+  "description": "Conversation RAG learning project — TypeScript port (grounded, cited, multi-tenant, eval)",
   "type": "module",
   "private": true,
   "engines": {

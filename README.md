@@ -1,4 +1,4 @@
-# Conversation RAG — PoC (TypeScript)
+# Conversation RAG — Learning Project (TypeScript)
 
 A small dependency-light RAG pipeline over community
 chat conversations, built to learn a
@@ -48,7 +48,7 @@ use OpenAI):
 The pipeline does not trust the model to admit when it doesn't know. Instead it
 decides in code, using the retrieval score.
 
-Every retrieved chunk has a cosine similarity score (see [store.js](./src/store.ts)). If the best chunk scores
+Every retrieved chunk has a cosine similarity score (see [store.ts](./src/store.ts)). If the best chunk scores
 below `RETRIEVAL_MIN_SCORE`, the model is never called — we just return
 "I don't know". If it clears the bar, only the chunks above the bar are passed
 to the model, with a prompt that says: use only this context, cite the message

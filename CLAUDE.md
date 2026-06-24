@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status: Python → TypeScript port (COMPLETE)
 
-This repo is a conversation-RAG PoC, originally Python, now fully rewritten to
+This repo is a conversation-RAG learning project, originally Python, now fully rewritten to
 TypeScript. All `src/*.ts` modules are idiomatic TS; the MOCK-mode pipeline is
 verified end-to-end against the original Python's eval baseline (recall@4 5/5,
 refusal 2/2, 100% overall, reproducible via `npm run eval`).
