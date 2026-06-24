@@ -1,4 +1,4 @@
-# Conversation RAG — PoC (TypeScript)
+# Conversation RAG — Learning Project (TypeScript)
 
 A small dependency-light RAG pipeline over community
 chat conversations, built to learn a
