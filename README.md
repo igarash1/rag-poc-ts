@@ -5,6 +5,23 @@ chat conversations, built to learn a
 community-intelligence product: answer questions from a community's history,
 grounded and cited, without hallucinating, and without leaking across tenants.
 
+## Pipeline
+
+```mermaid
+flowchart TD
+    M[messages.json] -->|"segment.ts — group by tenant+channel+time gap<br/>(keeps speaker + timestamp)"| C[conversation chunks]
+    C -->|"embed.ts — Gemini / OpenAI / mock"| V[vectors]
+    V -->|store.ts| IDX[("in-memory index<br/>tenant-aware")]
+
+    Q([user query]) -->|embed| QE[query vector]
+    IDX -.-> RT
+    QE -->|"retrieve.ts — top-k within tenant"| RT[candidates]
+    RT -->|"hybrid re-rank: semantic + lexical"| TOP[top-k]
+    TOP -->|"answer.ts — gate by relevance threshold"| G{"clears<br/>threshold?"}
+    G -->|no| REF["refuse: <i>I don't know</i>"]
+    G -->|yes| ANS["LLM answer using ONLY<br/>retrieved context — cite message IDs"]
+```
+
 ## Quickstart
 
 ```bash
